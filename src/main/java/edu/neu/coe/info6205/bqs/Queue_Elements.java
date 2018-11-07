@@ -23,6 +23,14 @@ public class Queue_Elements<Item> implements Iterable<Item>, Queue<Item>  {
      */
     public void enqueue( Item item) {
         // TODO
+    	if(isEmpty()) {
+    		oldest = new Element<Item>(item);
+    		newest = oldest;
+    	}
+    	else {
+    		newest.next = new Element<Item>(item);
+    		newest = newest.next;
+    	}
     }
 
 
@@ -34,8 +42,9 @@ public class Queue_Elements<Item> implements Iterable<Item>, Queue<Item>  {
     public Item dequeue() {
         if (isEmpty()) return null;
         else {
-            // TODO
-            return null;
+            Element<Item> de = oldest;
+            oldest = oldest.next;
+            return de.item;
         }
     }
 

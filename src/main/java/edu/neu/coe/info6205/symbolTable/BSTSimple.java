@@ -57,8 +57,39 @@ public class BSTSimple<Key extends Comparable<Key>, Value> implements BSTdetail<
     @Override
     public void delete(Key key) {
         // TODO- Implement this delete method or add your variations of delete.
+    	delete(root, key);
     }
-
+    private Node delete(Node root, Key key) {
+    	if(root == null) return null;
+    	int cf = key.compareTo(root.key);
+    	if(cf < 0) root.smaller = delete(root.smaller, key);
+    	else if(cf > 0) root.larger = delete(root.larger, key);
+    	else {
+    		if(root.smaller == null) return root.larger;
+    		if(root.larger == null) return root.smaller;
+    		Node t = root;
+    		root = min(t.larger);
+    		root.larger = deleteMin(t.larger);
+    		root.smaller = t.smaller;
+    	}
+    	root.count = size(root.smaller)+ size(root.larger);
+    	return root;
+    	
+    }
+    private int size(Node x) {
+    	return x==null? 0: x.count;
+    }
+    private Node min(Node root) {
+    	if(root.smaller == null) return root;
+    	return min(root.smaller);
+    }
+    private Node deleteMin(Node root) {
+    	if(root == null) return null;
+    	root.smaller = deleteMin(root.smaller);
+    	root.count = size(root.smaller) + size(root.larger);
+    	return root;
+    }
+    
     private Value get(Node node, Key key) {
         if (node == null) return null;
         int cf = key.compareTo(node.key);
