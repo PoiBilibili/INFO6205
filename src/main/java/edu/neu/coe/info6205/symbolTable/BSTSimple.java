@@ -65,12 +65,17 @@ public class BSTSimple<Key extends Comparable<Key>, Value> implements BSTdetail<
     		root = delete(root, key);
     }
     
-    public int height() {
-    	return height(root);
+    public int averageHeight() {
+    	int leaf = totalLeaf(root, -1);
+    	return totalDepth/leaf;
     }
-    private int height(Node x) {
-    	if(x == null) return 0;
-    	return 1+Math.max(height(x.smaller), height(x.larger));
+    private int totalLeaf(Node x, int d) {
+    	if(x == null) { 
+    		totalDepth+=d;
+    		return 1;
+    	}
+    	return totalLeaf(x.smaller, d+1) + totalLeaf(x.larger, d+1);
+    	
     }
     
     private Value get(Node node, Key key) {
@@ -244,4 +249,6 @@ public class BSTSimple<Key extends Comparable<Key>, Value> implements BSTdetail<
         show(root, sb, 0);
         return sb.toString();
     }
+    
+    private int totalDepth = 0;
 }

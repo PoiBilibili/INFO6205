@@ -3,42 +3,39 @@ package edu.neu.coe.info6205.symbolTable;
 import java.util.*;
 
 public class BSTDeletion {
-	private int N = 100; //initial number of keys;
-	private int M = 200; //range of key values;
-	private int X = 10000; //number of insertions/deletions;
+	private int N; //initial number of keys;
+	private int M; //range of key values;
+	private int X; //number of insertions/deletions;
 	
+	public BSTDeletion(int n, int m, int x) {
+		this.N = n;
+		this.M = m;
+		this.X = x;
+	}
 	private void initialize(BSTSimple<Integer, Integer> bst, int size) {
 		Random random = new Random();
 		while(bst.size()<size) {
 			int key = random.nextInt(M);
-			int value = random.nextInt(100);
-			bst.put(key, value);
+			bst.put(key, 1);
 		}
 	}
 	
-	private void putEle(BSTSimple<Integer, Integer> bst) {
-		Random random = new Random();
-		int key = random.nextInt(M);
-		int value = random.nextInt(100);
-		bst.put(key, value);
-	}
-	
-	private void delEle(BSTSimple<Integer, Integer> bst) {
-		Random random = new Random();
-		int key = random.nextInt(M);
-		bst.delete(key);
-	}
-	
-	public static void main(String[] args) {
-		BSTDeletion exp = new BSTDeletion();
+	public String runExp() {
+		StringBuilder ret = new StringBuilder();
 		BSTSimple<Integer, Integer> bst = new BSTSimple<Integer, Integer>();
-		exp.initialize(bst, exp.N);
-		int x = exp.X;
+		initialize(bst, N);
+		ret.append(bst.averageHeight());
+		int x = X;
+		Random r = new Random();
 		while(x>0) {
-			exp.putEle(bst);
-			exp.delEle(bst);
+			Random random = new Random();
+			boolean f = r.nextBoolean();
+			if(f) bst.put(random.nextInt(M), 1);
+			else bst.delete(random.nextInt(M));;
 			x--;
 		}
-		System.out.println(bst.height());
+		ret.append(" " + bst.averageHeight());
+		return ret.toString();
+		
 	}
 }
